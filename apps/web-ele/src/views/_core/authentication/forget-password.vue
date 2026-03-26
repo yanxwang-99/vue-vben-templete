@@ -1,42 +1,28 @@
 <script lang="ts" setup>
-import type { VbenFormSchema } from '@vben/common-ui';
-import type { Recordable } from '@vben/types';
+import { useRouter } from 'vue-router';
 
-import { computed, ref } from 'vue';
-
-import { AuthenticationForgetPassword, z } from '@vben/common-ui';
+import { VbenButton } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 defineOptions({ name: 'ForgetPassword' });
 
-const loading = ref(false);
+const router = useRouter();
 
-const formSchema = computed((): VbenFormSchema[] => {
-  return [
-    {
-      component: 'VbenInput',
-      componentProps: {
-        placeholder: 'example@example.com',
-      },
-      fieldName: 'email',
-      label: $t('authentication.email'),
-      rules: z
-        .string()
-        .min(1, { message: $t('authentication.emailTip') })
-        .email($t('authentication.emailValidErrorTip')),
-    },
-  ];
-});
-
-function handleSubmit(value: Recordable<any>) {
-  void value;
+function goToLogin() {
+  router.push('/auth/login');
 }
 </script>
 
 <template>
-  <AuthenticationForgetPassword
-    :form-schema="formSchema"
-    :loading="loading"
-    @submit="handleSubmit"
-  />
+  <div>
+    <h1 class="text-3xl font-medium">
+      {{ $t('authentication.forgetPassword') }} 🤦🏻‍♂️
+    </h1>
+
+    <p class="mt-6 text-center text-base text-foreground">请联系数据室重置。</p>
+
+    <VbenButton class="mt-6 w-full" variant="outline" @click="goToLogin()">
+      {{ $t('common.back') }}
+    </VbenButton>
+  </div>
 </template>
