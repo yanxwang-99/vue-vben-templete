@@ -36,7 +36,6 @@ export default defineEventHandler(async (event) => {
   setRefreshTokenCookie(event, refreshToken);
 
   return useResponseSuccess({
-    ...findUser,
     accessToken,
   });
 });
