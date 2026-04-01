@@ -4,7 +4,27 @@ import ElementPlus from 'unplugin-element-plus/vite';
 
 export default defineConfig(async () => {
   return {
-    application: {},
+    application: {
+      pwaOptions: {
+        manifest: {
+          description: 'Vben Admin is a modern admin dashboard template based on Vue 3.',
+          icons: [
+            {
+              sizes: '192x192',
+              src: '/images/pwa-icon-192.png',
+              type: 'image/png',
+            },
+            {
+              sizes: '512x512',
+              src: '/images/pwa-icon-512.png',
+              type: 'image/png',
+            },
+          ],
+          name: 'Vben Admin',
+          short_name: 'Vben Admin',
+        },
+      },
+    },
     vite: {
       plugins: [
         ElementPlus({
