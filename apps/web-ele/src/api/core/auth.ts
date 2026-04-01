@@ -36,11 +36,17 @@ export async function refreshTokenApi() {
 
 /**
  * 退出登录
+ * 同时携带 accessToken 和 Cookie (refreshToken)
+ * 后端可以将两种 token 都加入黑名单
  */
 export async function logoutApi() {
-  return baseRequestClient.post('/auth/logout', {
-    withCredentials: true,
-  });
+  return requestClient.post(
+    '/auth/logout',
+    {},
+    {
+      withCredentials: true,
+    },
+  );
 }
 
 /**
