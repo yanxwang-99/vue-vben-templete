@@ -9,6 +9,10 @@ export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
     name: import.meta.env.VITE_APP_TITLE,
+    defaultAvatar: '/images/avatar.webp',
+  },
+  logo: {
+    source: '/images/logo.webp',
   },
   theme: {
     mode: 'light',
