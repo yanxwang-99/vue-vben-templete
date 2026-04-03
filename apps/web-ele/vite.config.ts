@@ -40,6 +40,12 @@ export default defineConfig(async () => {
             target: 'http://localhost:5320/api',
             ws: true,
           },
+          // 离线地图资源代理
+          '/map-server': {
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/map-server/, ''),
+            target: 'http://localhost:8081',
+          },
         },
       },
     },

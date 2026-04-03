@@ -7,5 +7,11 @@
   },
   "dashboard": {
     "workspace": "工作台"
+  },
+  "map": {
+    "title": "地图",
+    "singleMarker": "单点标记",
+    "scatterPoints": "多点散列",
+    "trajectory": "轨迹回放"
   }
 }
