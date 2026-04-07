@@ -1,8 +1,11 @@
 import type { MapOptions } from 'maplibre-gl';
+
 import type { Ref, ShallowRef } from 'vue';
+
 import type { UseBaseMapOptions, UseBaseMapReturn } from '../types';
 
 import { onMounted, onUnmounted, ref, shallowRef } from 'vue';
+
 import { useResizeObserver } from '@vueuse/core';
 import maplibregl from 'maplibre-gl';
 import { Protocol } from 'pmtiles';
