@@ -37,7 +37,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'point-click', data: MapPoint & { index: number }): void;
+  (e: 'pointClick', data: MapPoint & { index: number }): void;
 }>();
 
 // ============ 地图初始化 ============
@@ -362,7 +362,7 @@ function showPointInfo(point: MapPoint, index: number) {
   ];
   panelVisible.value = true;
 
-  emit('point-click', { ...point, index });
+  emit('pointClick', { ...point, index });
 }
 
 // ============ 清理 ============
