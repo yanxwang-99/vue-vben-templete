@@ -1,16 +1,17 @@
-import type { Ref, ShallowRef } from 'vue';
 import type maplibregl from 'maplibre-gl';
+
+import type { Ref, ShallowRef } from 'vue';
 
 /**
  * 单点标记数据
  */
 export interface MarkerData {
-  /** 经度 */
-  lng: number;
-  /** 纬度 */
-  lat: number;
   /** 标记颜色 */
   color?: string;
+  /** 纬度 */
+  lat: number;
+  /** 经度 */
+  lng: number;
   /** 弹窗 HTML 内容 */
   popupHtml?: string;
 }
@@ -19,30 +20,30 @@ export interface MarkerData {
  * 散点数据
  */
 export interface ScatterPoint {
-  /** 经度 */
-  lng: number;
-  /** 纬度 */
-  lat: number;
-  /** 点的颜色 */
-  color?: string;
-  /** 点的半径 */
-  radius?: number;
   /** 自定义属性 */
   [key: string]: any;
+  /** 点的颜色 */
+  color?: string;
+  /** 纬度 */
+  lat: number;
+  /** 经度 */
+  lng: number;
+  /** 点的半径 */
+  radius?: number;
 }
 
 /**
  * 轨迹点数据
  */
 export interface TrajectoryPoint {
-  /** 经度 */
-  lng: number;
-  /** 纬度 */
-  lat: number;
-  /** 时间戳 (毫秒) */
-  timestamp: number;
   /** 自定义属性 */
   [key: string]: any;
+  /** 纬度 */
+  lat: number;
+  /** 经度 */
+  lng: number;
+  /** 时间戳 (毫秒) */
+  timestamp: number;
 }
 
 /**
@@ -51,28 +52,28 @@ export interface TrajectoryPoint {
 export interface MapContainerProps {
   /** 地图中心点 [lng, lat] */
   center?: [number, number];
-  /** 缩放级别 */
-  zoom?: number;
-  /** 样式 URL，默认通过 Vite 代理访问 */
-  styleUrl?: string;
-  /** 最小缩放级别 */
-  minZoom?: number;
   /** 最大缩放级别 */
   maxZoom?: number;
+  /** 最小缩放级别 */
+  minZoom?: number;
+  /** 样式 URL，默认通过 Vite 代理访问 */
+  styleUrl?: string;
+  /** 缩放级别 */
+  zoom?: number;
 }
 
 /**
  * 地图数据点（用于统一地图组件）
  */
 export interface MapPoint {
-  /** 经度 */
-  lng: number;
-  /** 纬度 */
-  lat: number;
-  /** 时间戳 (毫秒) */
-  timestamp: number;
   /** 动作类型 */
   action: string;
+  /** 纬度 */
+  lat: number;
+  /** 经度 */
+  lng: number;
+  /** 时间戳 (毫秒) */
+  timestamp: number;
 }
 
 /**
@@ -81,30 +82,30 @@ export interface MapPoint {
 export interface InfoField {
   /** 字段标签 */
   label: string;
-  /** 字段值 */
-  value: string | number;
   /** 是否显示为标签 */
   tag?: boolean;
   /** 标签类型 */
   tagType?: 'danger' | 'info' | 'primary' | 'success' | 'warning';
+  /** 字段值 */
+  value: number | string;
 }
 
 /**
  * 信息框组件 Props
  */
 export interface MapMarkerInfoProps {
-  /** 是否显示 */
-  visible: boolean;
-  /** 标题 */
-  title?: string;
-  /** 副标题 */
-  subtitle?: string;
-  /** 经度 */
-  lng?: number;
-  /** 纬度 */
-  lat?: number;
   /** 自定义字段 */
   fields?: InfoField[];
+  /** 纬度 */
+  lat?: number;
+  /** 经度 */
+  lng?: number;
+  /** 副标题 */
+  subtitle?: string;
+  /** 标题 */
+  title?: string;
+  /** 是否显示 */
+  visible: boolean;
 }
 
 /**
@@ -127,60 +128,60 @@ export interface MapSingleMarkerProps extends MapContainerProps {
  * 多点散列组件 Props
  */
 export interface MapScatterPointsProps extends MapContainerProps {
-  /** 散点数据数组 */
-  points: ScatterPoint[];
   /** 默认点的颜色 */
   defaultColor?: string;
   /** 默认点的半径 */
   defaultRadius?: number;
+  /** 散点数据数组 */
+  points: ScatterPoint[];
 }
 
 /**
  * 轨迹回放组件 Props
  */
 export interface MapTrajectoryProps extends MapContainerProps {
-  /** 轨迹点数据数组（按时间顺序） */
-  points: TrajectoryPoint[];
+  /** 是否自动播放 */
+  autoPlay?: boolean;
   /** 轨迹线颜色 */
   lineColor?: string;
   /** 轨迹线宽度 */
   lineWidth?: number;
+  /** 播放速度（毫秒/点） */
+  playSpeed?: number;
   /** 轨迹点颜色 */
   pointColor?: string;
   /** 轨迹点半径 */
   pointRadius?: number;
-  /** 是否自动播放 */
-  autoPlay?: boolean;
-  /** 播放速度（毫秒/点） */
-  playSpeed?: number;
+  /** 轨迹点数据数组（按时间顺序） */
+  points: TrajectoryPoint[];
 }
 
 /**
  * useBaseMap composable 选项
  */
 export interface UseBaseMapOptions {
-  /** 地图容器元素的 ref */
-  container: Readonly<Ref<HTMLElement | null | undefined>>;
-  /** 样式 URL */
-  styleUrl?: string;
   /** 中心点 */
   center?: [number, number];
-  /** 缩放级别 */
-  zoom?: number;
-  /** 最小缩放 */
-  minZoom?: number;
+  /** 地图容器元素的 ref */
+  container: Readonly<Ref<HTMLElement | null | undefined>>;
   /** 最大缩放 */
   maxZoom?: number;
+  /** 最小缩放 */
+  minZoom?: number;
+  /** 样式 URL */
+  styleUrl?: string;
+  /** 缩放级别 */
+  zoom?: number;
 }
 
 /**
  * useBaseMap composable 返回值
  */
 export interface UseBaseMapReturn {
-  /** MapLibre Map 实例 */
-  map: Readonly<ShallowRef<maplibregl.Map | null>>;
   /** 加载状态 */
   loading: Readonly<Ref<boolean>>;
+  /** MapLibre Map 实例 */
+  map: Readonly<ShallowRef<maplibregl.Map | null>>;
   /** 手动触发 resize */
   resize: () => void;
 }

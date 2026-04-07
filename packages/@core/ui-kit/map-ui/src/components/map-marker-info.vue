@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import { Pin, X } from '@vben/icons';
-
+import { Pin, X } from '@vben-core/icons';
 import {
   Badge,
   Card,
@@ -16,9 +15,9 @@ import {
 // ============ 类型定义 ============
 interface InfoField {
   label: string;
-  value: number | string;
   tag?: boolean;
   tagType?: 'danger' | 'info' | 'primary' | 'success' | 'warning';
+  value: number | string;
 }
 
 defineOptions({ name: 'MapMarkerInfo' });

@@ -20,8 +20,8 @@
     }
   },
   "dependencies": {
+    "@vben-core/icons": "workspace:*",
     "@vben-core/shadcn-ui": "workspace:*",
-    "@vben/icons": "workspace:*",
     "@vueuse/core": "catalog:",
     "maplibre-gl": "catalog:",
     "pmtiles": "catalog:",
