@@ -1433,6 +1433,9 @@ importers:
       '@vben-core/shadcn-ui':
         specifier: workspace:*
         version: link:../../@core/ui-kit/shadcn-ui
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../../icons
       '@vueuse/core':
         specifier: 'catalog:'
         version: 14.2.1(vue@3.5.30(typescript@5.9.3))
