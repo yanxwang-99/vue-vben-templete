@@ -47,6 +47,20 @@ export interface TrajectoryPoint {
 }
 
 /**
+ * 热力图配置选项
+ */
+export interface HeatmapOptions {
+  /** 热力图颜色渐变 */
+  colors?: Array<{ color: string; stop: number }>;
+  /** 强度 (0-1) */
+  intensity?: number;
+  /** 不透明度 (0-1) */
+  opacity?: number;
+  /** 半径 (像素) */
+  radius?: number;
+}
+
+/**
  * 地图容器组件 Props
  */
 export interface MapContainerProps {

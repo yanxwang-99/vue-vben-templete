@@ -12,17 +12,17 @@ import MapMarkerInfo from './map-marker-info.vue';
 
 // ============ 类型定义 ============
 interface MapPoint {
-  lng: number;
-  lat: number;
-  timestamp: number;
   action: string;
+  lat: number;
+  lng: number;
+  timestamp: number;
 }
 
 interface InfoField {
   label: string;
-  value: number | string;
   tag?: boolean;
   tagType?: 'danger' | 'info' | 'primary' | 'success' | 'warning';
+  value: number | string;
 }
 
 // ============ Props ============
@@ -53,7 +53,7 @@ const { map, loading } = useBaseMap({
 });
 
 // ============ 状态 ============
-type DisplayMode = 'none' | 'scatter' | 'trajectory';
+type DisplayMode = 'heatmap' | 'none' | 'scatter' | 'trajectory';
 const mode = ref<DisplayMode>('none');
 const isPlaying = ref(false);
 const currentIndex = ref(0);
@@ -69,6 +69,9 @@ const panelFields = ref<InfoField[]>([]);
 // ============ 地图要素管理 ============
 const markerInstances = shallowRef<maplibregl.Marker[]>([]);
 const trajectoryLine = shallowRef<null | { layer: string; source: string }>(
+  null,
+);
+const heatmapLayer = shallowRef<null | { layer: string; source: string }>(
   null,
 );
 const movingMarker = shallowRef<maplibregl.Marker | null>(null);
@@ -252,6 +255,77 @@ function enableTrajectoryMode() {
   fitBounds();
 }
 
+// ============ 热力图模式 ============
+function enableHeatmapMode() {
+  clearAllMarkers();
+  mode.value = 'heatmap';
+  panelVisible.value = false;
+
+  if (!map.value || props.points.length === 0) return;
+
+  const sourceId = 'heatmap-source';
+  const layerId = 'heatmap-layer';
+
+  // 清除已存在的热力图层
+  if (map.value.getSource(sourceId)) {
+    if (map.value.getLayer(layerId)) {
+      map.value.removeLayer(layerId);
+    }
+    map.value.removeSource(sourceId);
+  }
+
+  // 添加 GeoJSON 数据源
+  map.value.addSource(sourceId, {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: props.points.map((p) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [p.lng, p.lat],
+        },
+        properties: {
+          weight: 1,
+        },
+      })),
+    },
+  });
+
+  // 添加热力图层
+  map.value.addLayer({
+    id: layerId,
+    type: 'heatmap',
+    source: sourceId,
+    paint: {
+      'heatmap-weight': ['get', 'weight'],
+      'heatmap-intensity': 0.8,
+      'heatmap-color': [
+        'interpolate',
+        ['linear'],
+        ['heatmap-density'],
+        0,
+        'rgba(0, 0, 255, 0)',
+        0.2,
+        'royalblue',
+        0.4,
+        'cyan',
+        0.6,
+        'lime',
+        0.8,
+        'yellow',
+        1,
+        'red',
+      ],
+      'heatmap-radius': 30,
+      'heatmap-opacity': 0.8,
+    },
+  });
+
+  heatmapLayer.value = { source: sourceId, layer: layerId };
+  fitBounds();
+}
+
 // ============ 移动标记 ============
 function createMovingMarker() {
   if (!map.value || props.points.length === 0) return;
@@ -382,6 +456,17 @@ function clearAllMarkers() {
     trajectoryLine.value = null;
   }
 
+  // 清理热力图层
+  if (map.value && heatmapLayer.value) {
+    if (map.value.getLayer(heatmapLayer.value.layer)) {
+      map.value.removeLayer(heatmapLayer.value.layer);
+    }
+    if (map.value.getSource(heatmapLayer.value.source)) {
+      map.value.removeSource(heatmapLayer.value.source);
+    }
+    heatmapLayer.value = null;
+  }
+
   removeMovingMarker();
   stopAnimation();
 
@@ -490,6 +575,13 @@ defineExpose({
             >
               轨迹
             </VbenButton>
+            <VbenButton
+              :variant="mode === 'heatmap' ? 'default' : 'outline'"
+              size="sm"
+              @click="enableHeatmapMode"
+            >
+              热力图
+            </VbenButton>
           </VbenButtonGroup>
 
           <!-- 轨迹回放控制 -->
@@ -540,12 +632,5 @@ defineExpose({
       :fields="panelFields"
       @close="handlePanelClose"
     />
-
-    <!-- 底部提示 -->
-    <div
-      class="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-lg bg-white/90 px-3 py-2 text-xs text-gray-500 shadow-lg"
-    >
-      点击地图查看坐标 | 点击标记点查看详情
-    </div>
   </div>
 </template>

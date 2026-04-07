@@ -17,27 +17,77 @@ interface MapPoint {
 const dataPoints = ref<MapPoint[]>(generateSampleData());
 
 function generateSampleData(): MapPoint[] {
-  const baseTime = Date.now() - 3600 * 1000;
+  const baseTime = Date.now() - 7200 * 1000; // 2小时前开始
   const centerLng = 120.3119;
   const centerLat = 31.4912;
   const actions = ['停留', '移动', '拍照', '打卡', '休息'];
   const points: MapPoint[] = [];
 
-  const pointCount = 20;
-  for (let i = 0; i < pointCount; i++) {
-    const p = i / (pointCount - 1);
-    const angle = p * Math.PI * 3;
-    const radius = 0.005 + p * 0.015;
+  // 1. 主要轨迹路径 (15个点，模拟移动路线)
+  const trajectoryPoints = [
+    [0, 0], [-0.008, 0.005], [-0.012, 0.012], [-0.01, 0.02],
+    [-0.005, 0.025], [0.005, 0.022], [0.012, 0.018], [0.018, 0.012],
+    [0.02, 0.005], [0.018, -0.005], [0.012, -0.012], [0.005, -0.018],
+    [-0.005, -0.02], [-0.012, -0.015], [-0.008, -0.008],
+  ];
 
+  for (let i = 0; i < trajectoryPoints.length; i++) {
+    const [offsetLng, offsetLat] = trajectoryPoints[i]!;
     points.push({
-      lng: centerLng + Math.cos(angle) * radius,
-      lat: centerLat + Math.sin(angle) * radius,
-      timestamp: baseTime + i * 180_000,
+      lng: centerLng + offsetLng,
+      lat: centerLat + offsetLat,
+      timestamp: baseTime + i * 300_000, // 每5分钟一个点
+      action: i === 0 || i === 5 || i === 10 ? '打卡' : (Math.random() > 0.7 ? '拍照' : '移动'),
+    });
+  }
+
+  // 2. 热点区域1 - 商业区 (20个点聚集)
+  const hotSpot1 = { lng: centerLng - 0.005, lat: centerLat + 0.008 };
+  for (let i = 0; i < 20; i++) {
+    points.push({
+      lng: hotSpot1.lng + (Math.random() - 0.5) * 0.006,
+      lat: hotSpot1.lat + (Math.random() - 0.5) * 0.006,
+      timestamp: baseTime + Math.random() * 7200_000,
       action: actions[Math.floor(Math.random() * actions.length)]!,
     });
   }
 
-  return points;
+  // 3. 热点区域2 - 公园 (15个点聚集)
+  const hotSpot2 = { lng: centerLng + 0.012, lat: centerLat - 0.003 };
+  for (let i = 0; i < 15; i++) {
+    points.push({
+      lng: hotSpot2.lng + (Math.random() - 0.5) * 0.005,
+      lat: hotSpot2.lat + (Math.random() - 0.5) * 0.005,
+      timestamp: baseTime + Math.random() * 7200_000,
+      action: actions[Math.floor(Math.random() * actions.length)]!,
+    });
+  }
+
+  // 4. 热点区域3 - 地铁站 (12个点聚集)
+  const hotSpot3 = { lng: centerLng + 0.003, lat: centerLat + 0.015 };
+  for (let i = 0; i < 12; i++) {
+    points.push({
+      lng: hotSpot3.lng + (Math.random() - 0.5) * 0.004,
+      lat: hotSpot3.lat + (Math.random() - 0.5) * 0.004,
+      timestamp: baseTime + Math.random() * 7200_000,
+      action: actions[Math.floor(Math.random() * actions.length)]!,
+    });
+  }
+
+  // 5. 随机分散点 (18个点)
+  for (let i = 0; i < 18; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const radius = 0.01 + Math.random() * 0.015;
+    points.push({
+      lng: centerLng + Math.cos(angle) * radius,
+      lat: centerLat + Math.sin(angle) * radius,
+      timestamp: baseTime + Math.random() * 7200_000,
+      action: actions[Math.floor(Math.random() * actions.length)]!,
+    });
+  }
+
+  // 按时间排序
+  return points.sort((a, b) => a.timestamp - b.timestamp);
 }
 
 function refreshData() {
