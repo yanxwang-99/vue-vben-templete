@@ -341,15 +341,16 @@ function showPointInfo(point: MapPoint, index: number) {
   panelLng.value = point.lng;
   panelLat.value = point.lat;
 
-  const actionTagType = (
-    {
-      停留: 'info',
-      移动: 'success',
-      拍照: 'warning',
-      打卡: 'primary',
-      休息: 'warning',
-    } as Record<string, InfoField['tagType']>
-  )[point.action] || 'info';
+  const actionTagType =
+    (
+      {
+        停留: 'info',
+        移动: 'success',
+        拍照: 'warning',
+        打卡: 'primary',
+        休息: 'warning',
+      } as Record<string, InfoField['tagType']>
+    )[point.action] || 'info';
 
   panelFields.value = [
     { label: '序号', value: index + 1, tag: true, tagType: 'primary' },
@@ -462,7 +463,9 @@ defineExpose({
 
     <!-- 左上角工具栏 -->
     <div class="absolute left-4 top-4 z-10">
-      <div class="rounded-lg border border-gray-200 bg-white/95 p-3 shadow-lg backdrop-blur">
+      <div
+        class="rounded-lg border border-gray-200 bg-white/95 p-3 shadow-lg backdrop-blur"
+      >
         <div class="flex flex-col gap-3">
           <div class="text-xs font-medium text-gray-500">显示模式</div>
           <VbenButtonGroup>
@@ -516,7 +519,9 @@ defineExpose({
                   class="h-1 w-24 cursor-pointer appearance-none rounded-full bg-gray-300"
                   step="1"
                   type="range"
-                  @input="seek(Number(($event.target as HTMLInputElement).value))"
+                  @input="
+                    seek(Number(($event.target as HTMLInputElement).value))
+                  "
                 />
               </div>
             </div>

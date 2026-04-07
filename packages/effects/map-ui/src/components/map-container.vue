@@ -42,7 +42,9 @@ defineExpose({
       class="pointer-events-none absolute inset-0 flex items-center justify-center bg-white/80"
     >
       <div class="flex flex-col items-center gap-2">
-        <div class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+        <div
+          class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+        ></div>
         <span class="text-sm text-gray-500">地图加载中...</span>
       </div>
     </div>

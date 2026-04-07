@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-
 defineOptions({ name: 'MapMarkerInfo' });
 
 // ============ Props ============
@@ -61,11 +60,10 @@ function getTagClass(type?: string): string {
 
 <template>
   <Transition name="slide-fade">
-    <div
-      v-if="visible"
-      class="absolute right-4 top-4 z-20 w-80"
-    >
-      <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+    <div v-if="visible" class="absolute right-4 top-4 z-20 w-80">
+      <div
+        class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg"
+      >
         <!-- 头部 -->
         <div class="flex items-center justify-between px-4 pt-4 pb-2">
           <div class="min-w-0 flex-1">
@@ -135,7 +133,10 @@ function getTagClass(type?: string): string {
         </div>
 
         <!-- 自定义字段 -->
-        <div v-if="fields.length > 0" class="border-t border-gray-100 px-4 pb-4 pt-3">
+        <div
+          v-if="fields.length > 0"
+          class="border-t border-gray-100 px-4 pb-4 pt-3"
+        >
           <div class="space-y-2">
             <div
               v-for="(field, index) in fields"
@@ -152,10 +153,7 @@ function getTagClass(type?: string): string {
               >
                 {{ field.value }}
               </span>
-              <span
-                v-else
-                class="text-right text-xs text-gray-700"
-              >
+              <span v-else class="text-right text-xs text-gray-700">
                 {{ field.value }}
               </span>
             </div>
