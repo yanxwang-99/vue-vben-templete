@@ -10,8 +10,6 @@
   },
   "map": {
     "title": "地图",
-    "singleMarker": "单点标记",
-    "scatterPoints": "多点散列",
-    "trajectory": "轨迹回放"
+    "unified": "地图"
   }
 }

@@ -62,6 +62,60 @@ export interface MapContainerProps {
 }
 
 /**
+ * 地图数据点（用于统一地图组件）
+ */
+export interface MapPoint {
+  /** 经度 */
+  lng: number;
+  /** 纬度 */
+  lat: number;
+  /** 时间戳 (毫秒) */
+  timestamp: number;
+  /** 动作类型 */
+  action: string;
+}
+
+/**
+ * 信息框字段
+ */
+export interface InfoField {
+  /** 字段标签 */
+  label: string;
+  /** 字段值 */
+  value: string | number;
+  /** 是否显示为标签 */
+  tag?: boolean;
+  /** 标签类型 */
+  tagType?: 'danger' | 'info' | 'primary' | 'success' | 'warning';
+}
+
+/**
+ * 信息框组件 Props
+ */
+export interface MapMarkerInfoProps {
+  /** 是否显示 */
+  visible: boolean;
+  /** 标题 */
+  title?: string;
+  /** 副标题 */
+  subtitle?: string;
+  /** 经度 */
+  lng?: number;
+  /** 纬度 */
+  lat?: number;
+  /** 自定义字段 */
+  fields?: InfoField[];
+}
+
+/**
+ * 统一地图组件 Props
+ */
+export interface MapUnifiedProps extends MapContainerProps {
+  /** 数据点集合 */
+  points?: MapPoint[];
+}
+
+/**
  * 单点标记组件 Props
  */
 export interface MapSingleMarkerProps extends MapContainerProps {

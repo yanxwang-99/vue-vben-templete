@@ -1,30 +1,18 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import {
-  ElCard,
-  ElDescriptions,
-  ElDescriptionsItem,
-  ElDivider,
-  ElTag,
-} from 'element-plus';
+
 
 defineOptions({ name: 'MapMarkerInfo' });
 
-interface InfoField {
-  label: string;
-  value: string | number;
-  tag?: boolean;
-  tagType?: 'primary' | 'success' | 'warning' | 'danger' | 'info';
-}
-
+// ============ Props ============
 const props = withDefaults(
   defineProps<{
-    visible: boolean;
-    title?: string;
-    subtitle?: string;
     fields?: InfoField[];
-    lng?: number;
     lat?: number;
+    lng?: number;
+    subtitle?: string;
+    title?: string;
+    visible: boolean;
   }>(),
   {
     title: '',
@@ -37,15 +25,37 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
+// ============ 类型定义 ============
+interface InfoField {
+  label: string;
+  value: number | string;
+  tag?: boolean;
+  tagType?: 'danger' | 'info' | 'primary' | 'success' | 'warning';
+}
+
+// ============ 计算属性 ============
 const formattedLng = computed(() =>
-  props.lng != null ? props.lng.toFixed(6) : '-',
-);
-const formattedLat = computed(() =>
-  props.lat != null ? props.lat.toFixed(6) : '-',
+  props.lng == null ? '-' : props.lng.toFixed(6),
 );
 
+const formattedLat = computed(() =>
+  props.lat == null ? '-' : props.lat.toFixed(6),
+);
+
+// ============ 方法 ============
 function handleClose() {
   emit('close');
+}
+
+function getTagClass(type?: string): string {
+  const classes: Record<string, string> = {
+    danger: 'bg-red-100 text-red-700',
+    info: 'bg-gray-100 text-gray-700',
+    primary: 'bg-blue-100 text-blue-700',
+    success: 'bg-green-100 text-green-700',
+    warning: 'bg-yellow-100 text-yellow-700',
+  };
+  return classes[type || 'primary'] || classes.primary;
 }
 </script>
 
@@ -55,11 +65,7 @@ function handleClose() {
       v-if="visible"
       class="absolute right-4 top-4 z-20 w-80"
     >
-      <ElCard
-        shadow="always"
-        class="rounded-xl border-0"
-        :body-style="{ padding: 0 }"
-      >
+      <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
         <!-- 头部 -->
         <div class="flex items-center justify-between px-4 pt-4 pb-2">
           <div class="min-w-0 flex-1">
@@ -97,7 +103,8 @@ function handleClose() {
           </button>
         </div>
 
-        <ElDivider class="!my-0" />
+        <!-- 分隔线 -->
+        <div class="border-t border-gray-100"></div>
 
         <!-- 坐标信息 -->
         <div class="flex items-center gap-3 px-4 py-3">
@@ -128,32 +135,38 @@ function handleClose() {
         </div>
 
         <!-- 自定义字段 -->
-        <div v-if="fields.length > 0" class="px-4 pb-4">
-          <ElDescriptions :column="1" border size="small">
-            <ElDescriptionsItem
+        <div v-if="fields.length > 0" class="border-t border-gray-100 px-4 pb-4 pt-3">
+          <div class="space-y-2">
+            <div
               v-for="(field, index) in fields"
               :key="index"
-              :label="field.label"
+              class="flex items-start justify-between gap-2"
             >
-              <ElTag
+              <span class="flex-shrink-0 text-xs text-gray-500">
+                {{ field.label }}
+              </span>
+              <span
                 v-if="field.tag"
-                :type="field.tagType ?? 'primary'"
-                size="small"
-                effect="light"
-                round
+                class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
+                :class="getTagClass(field.tagType)"
               >
                 {{ field.value }}
-              </ElTag>
-              <span v-else class="text-sm text-gray-700">{{ field.value }}</span>
-            </ElDescriptionsItem>
-          </ElDescriptions>
+              </span>
+              <span
+                v-else
+                class="text-right text-xs text-gray-700"
+              >
+                {{ field.value }}
+              </span>
+            </div>
+          </div>
         </div>
 
         <!-- 底部插槽 -->
         <div v-if="$slots.footer" class="border-t border-gray-100 px-4 py-3">
-          <slot name="footer" />
+          <slot name="footer"></slot>
         </div>
-      </ElCard>
+      </div>
     </div>
   </Transition>
 </template>
@@ -162,15 +175,18 @@ function handleClose() {
 .slide-fade-enter-active {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .slide-fade-leave-active {
   transition: all 0.2s ease-in;
 }
+
 .slide-fade-enter-from {
+  opacity: 0;
   transform: translateX(20px);
-  opacity: 0;
 }
+
 .slide-fade-leave-to {
-  transform: translateX(10px);
   opacity: 0;
+  transform: translateX(10px);
 }
 </style>

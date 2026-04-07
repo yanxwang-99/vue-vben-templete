@@ -20,9 +20,10 @@
     }
   },
   "dependencies": {
+    "@vben-core/shadcn-ui": "workspace:*",
     "@vueuse/core": "catalog:",
-    "maplibre-gl": "^4.7.1",
-    "pmtiles": "^3.2.1",
+    "maplibre-gl": "catalog:",
+    "pmtiles": "catalog:",
     "vue": "catalog:"
   }
 }

@@ -10,8 +10,6 @@
   },
   "map": {
     "title": "Map",
-    "singleMarker": "Single Marker",
-    "scatterPoints": "Scatter Points",
-    "trajectory": "Trajectory"
+    "unified": "Map"
   }
 }

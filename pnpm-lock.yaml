@@ -270,6 +270,9 @@ catalogs:
     lucide-vue-next:
       specifier: ^0.577.0
       version: 0.577.0
+    maplibre-gl:
+      specifier: ^4.7.1
+      version: 4.7.1
     nitropack:
       specifier: ^2.13.2
       version: 2.13.2
@@ -297,6 +300,9 @@ catalogs:
     playwright:
       specifier: ^1.58.2
       version: 1.58.2
+    pmtiles:
+      specifier: ^3.2.1
+      version: 3.2.1
     postcss:
       specifier: ^8.5.8
       version: 8.5.8
@@ -1424,14 +1430,17 @@ importers:
 
   packages/effects/map-ui:
     dependencies:
+      '@vben-core/shadcn-ui':
+        specifier: workspace:*
+        version: link:../../@core/ui-kit/shadcn-ui
       '@vueuse/core':
         specifier: 'catalog:'
         version: 14.2.1(vue@3.5.30(typescript@5.9.3))
       maplibre-gl:
-        specifier: ^4.7.1
+        specifier: 'catalog:'
         version: 4.7.1
       pmtiles:
-        specifier: ^3.2.1
+        specifier: 'catalog:'
         version: 3.2.1
       vue:
         specifier: ^3.5.30
