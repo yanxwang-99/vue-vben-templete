@@ -470,7 +470,7 @@ defineExpose({
           <div class="text-xs font-medium text-gray-500">显示模式</div>
           <VbenButtonGroup>
             <VbenButton
-              :variant="mode === 'none' ? 'default' : 'outline'"
+              variant="outline"
               size="sm"
               @click="clearMode"
             >
