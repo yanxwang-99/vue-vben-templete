@@ -610,6 +610,9 @@ importers:
 
   apps/web-ele:
     dependencies:
+      '@vben-core/map-ui':
+        specifier: workspace:*
+        version: link:../../packages/@core/ui-kit/map-ui
       '@vben/access':
         specifier: workspace:*
         version: link:../../packages/effects/access
@@ -631,9 +634,6 @@ importers:
       '@vben/locales':
         specifier: workspace:*
         version: link:../../packages/locales
-      '@vben/map-ui':
-        specifier: workspace:*
-        version: link:../../packages/effects/map-ui
       '@vben/plugins':
         specifier: workspace:*
         version: link:../../packages/effects/plugins
@@ -1123,6 +1123,27 @@ importers:
         specifier: ^3.5.30
         version: 3.5.30(typescript@5.9.3)
 
+  packages/@core/ui-kit/map-ui:
+    dependencies:
+      '@vben-core/shadcn-ui':
+        specifier: workspace:*
+        version: link:../shadcn-ui
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../../../icons
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 14.2.1(vue@3.5.30(typescript@5.9.3))
+      maplibre-gl:
+        specifier: 'catalog:'
+        version: 4.7.1
+      pmtiles:
+        specifier: 'catalog:'
+        version: 3.2.1
+      vue:
+        specifier: ^3.5.30
+        version: 3.5.30(typescript@5.9.3)
+
   packages/@core/ui-kit/menu-ui:
     dependencies:
       '@vben-core/composables':
@@ -1427,27 +1448,6 @@ importers:
       vue-router:
         specifier: 'catalog:'
         version: 5.0.4(@vue/compiler-sfc@3.5.30)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.30(typescript@5.9.3)))(vue@3.5.30(typescript@5.9.3))
-
-  packages/effects/map-ui:
-    dependencies:
-      '@vben-core/shadcn-ui':
-        specifier: workspace:*
-        version: link:../../@core/ui-kit/shadcn-ui
-      '@vben/icons':
-        specifier: workspace:*
-        version: link:../../icons
-      '@vueuse/core':
-        specifier: 'catalog:'
-        version: 14.2.1(vue@3.5.30(typescript@5.9.3))
-      maplibre-gl:
-        specifier: 'catalog:'
-        version: 4.7.1
-      pmtiles:
-        specifier: 'catalog:'
-        version: 3.2.1
-      vue:
-        specifier: ^3.5.30
-        version: 3.5.30(typescript@5.9.3)
 
   packages/effects/plugins:
     dependencies:

@@ -113,8 +113,8 @@
       "path": "packages/effects/layouts"
     },
     {
-      "name": "@vben/map-ui",
-      "path": "packages/effects/map-ui"
+      "name": "@vben-core/map-ui",
+      "path": "packages/@core/ui-kit/map-ui"
     },
     {
       "name": "@vben/plugins",

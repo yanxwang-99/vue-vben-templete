@@ -26,9 +26,9 @@
     "#/*": "./src/*"
   },
   "dependencies": {
+    "@vben-core/map-ui": "workspace:*",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
-    "@vben/map-ui": "workspace:*",
     "@vben/constants": "workspace:*",
     "@vben/hooks": "workspace:*",
     "@vben/icons": "workspace:*",

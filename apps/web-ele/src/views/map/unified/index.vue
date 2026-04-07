@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-import { MapUnified } from '@vben/map-ui';
+import { MapUnified } from '@vben-core/map-ui';
 
 defineOptions({ name: 'MapUnifiedPage' });
 
