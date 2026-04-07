@@ -17,6 +17,8 @@ const props = withDefaults(
     title: '',
     subtitle: '',
     fields: () => [],
+    lat: undefined,
+    lng: undefined,
   },
 );
 
