@@ -77,6 +77,10 @@
       "path": "packages/@core/ui-kit/layout-ui"
     },
     {
+      "name": "@vben-core/map-ui",
+      "path": "packages/@core/ui-kit/map-ui"
+    },
+    {
       "name": "@vben-core/menu-ui",
       "path": "packages/@core/ui-kit/menu-ui"
     },
@@ -111,10 +115,6 @@
     {
       "name": "@vben/layouts",
       "path": "packages/effects/layouts"
-    },
-    {
-      "name": "@vben-core/map-ui",
-      "path": "packages/@core/ui-kit/map-ui"
     },
     {
       "name": "@vben/plugins",

@@ -10,6 +10,7 @@
   },
   "map": {
     "title": "地图",
-    "unified": "地图"
+    "unified": "地图",
+    "marking": "打点上图"
   }
 }

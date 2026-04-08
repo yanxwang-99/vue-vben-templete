@@ -71,9 +71,7 @@ const markerInstances = shallowRef<maplibregl.Marker[]>([]);
 const trajectoryLine = shallowRef<null | { layer: string; source: string }>(
   null,
 );
-const heatmapLayer = shallowRef<null | { layer: string; source: string }>(
-  null,
-);
+const heatmapLayer = shallowRef<null | { layer: string; source: string }>(null);
 const movingMarker = shallowRef<maplibregl.Marker | null>(null);
 const clickMarker = shallowRef<maplibregl.Marker | null>(null);
 let animationTimer: null | ReturnType<typeof setTimeout> = null;
@@ -164,7 +162,8 @@ function enableScatterMode() {
   const markers: maplibregl.Marker[] = [];
 
   for (let i = 0; i < props.points.length; i++) {
-    const point = props.points[i]!;
+    const point = props.points[i];
+    if (!point) continue;
 
     const wrapper = createDropletElement('#3B82F6', 28, i + 1);
 
@@ -231,7 +230,8 @@ function enableTrajectoryMode() {
   const markers: maplibregl.Marker[] = [];
 
   for (let i = 0; i < props.points.length; i++) {
-    const point = props.points[i]!;
+    const point = props.points[i];
+    if (!point) continue;
 
     const wrapper = createDropletElement('#EF4444', 24, i + 1);
 
@@ -346,7 +346,8 @@ function createMovingMarker() {
 
   wrapper.append(el);
 
-  const firstPoint = props.points[0]!;
+  const firstPoint = props.points[0];
+  if (!firstPoint) return;
   movingMarker.value = new maplibregl.Marker({ element: wrapper })
     .setLngLat([firstPoint.lng, firstPoint.lat])
     .addTo(map.value);
@@ -371,7 +372,8 @@ function play() {
     }
 
     currentIndex.value++;
-    const point = props.points[currentIndex.value]!;
+    const point = props.points[currentIndex.value];
+    if (!point) return;
     movingMarker.value.setLngLat([point.lng, point.lat]);
 
     animationTimer = setTimeout(step, 500);
@@ -393,7 +395,8 @@ function stopAnimation() {
   currentIndex.value = 0;
 
   if (movingMarker.value && props.points.length > 0) {
-    const firstPoint = props.points[0]!;
+    const firstPoint = props.points[0];
+    if (!firstPoint) return;
     movingMarker.value.setLngLat([firstPoint.lng, firstPoint.lat]);
   }
 }
@@ -403,8 +406,10 @@ function seek(index: number) {
   currentIndex.value = Math.max(0, Math.min(index, props.points.length - 1));
 
   if (movingMarker.value) {
-    const point = props.points[currentIndex.value]!;
-    movingMarker.value.setLngLat([point.lng, point.lat]);
+    const point = props.points[currentIndex.value];
+    if (point) {
+      movingMarker.value.setLngLat([point.lng, point.lat]);
+    }
   }
 }
 
@@ -525,7 +530,35 @@ defineExpose({
   seek,
   isPlaying,
   currentIndex,
+  clearAllMarkers,
+  enableScatterMode,
+  enableTrajectoryMode,
+  enableHeatmapMode,
 });
+
+// 当 points 变化时，自动刷新当前模式的标记
+watch(
+  () => props.points,
+  (newPoints, oldPoints) => {
+    if (mode.value !== 'none' && newPoints !== oldPoints) {
+      switch (mode.value) {
+        case 'heatmap': {
+          enableHeatmapMode();
+          break;
+        }
+        case 'scatter': {
+          enableScatterMode();
+          break;
+        }
+        case 'trajectory': {
+          enableTrajectoryMode();
+          break;
+        }
+      }
+    }
+  },
+  { deep: false },
+);
 </script>
 
 <template>
@@ -549,71 +582,65 @@ defineExpose({
     <!-- 左上角工具栏 -->
     <div class="absolute left-4 top-4 z-10">
       <div class="flex flex-col gap-3">
-          <VbenButtonGroup>
-            <VbenButton
-              variant="outline"
-              size="sm"
-              @click="clearMode"
-            >
-              清除
-            </VbenButton>
-            <VbenButton
-              :variant="mode === 'scatter' ? 'default' : 'outline'"
-              size="sm"
-              @click="enableScatterMode"
-            >
-              撒点
-            </VbenButton>
-            <VbenButton
-              :variant="mode === 'trajectory' ? 'default' : 'outline'"
-              size="sm"
-              @click="enableTrajectoryMode"
-            >
-              轨迹
-            </VbenButton>
-            <VbenButton
-              :variant="mode === 'heatmap' ? 'default' : 'outline'"
-              size="sm"
-              @click="enableHeatmapMode"
-            >
-              热力图
-            </VbenButton>
-          </VbenButtonGroup>
+        <VbenButtonGroup>
+          <VbenButton variant="outline" size="sm" @click="clearMode">
+            清除
+          </VbenButton>
+          <VbenButton
+            :variant="mode === 'scatter' ? 'default' : 'outline'"
+            size="sm"
+            @click="enableScatterMode"
+          >
+            撒点
+          </VbenButton>
+          <VbenButton
+            :variant="mode === 'trajectory' ? 'default' : 'outline'"
+            size="sm"
+            @click="enableTrajectoryMode"
+          >
+            轨迹
+          </VbenButton>
+          <VbenButton
+            :variant="mode === 'heatmap' ? 'default' : 'outline'"
+            size="sm"
+            @click="enableHeatmapMode"
+          >
+            热力图
+          </VbenButton>
+        </VbenButtonGroup>
 
-          <!-- 轨迹回放控制 -->
-          <template v-if="mode === 'trajectory'">
-            <div class="flex flex-col gap-2">
-              <VbenButtonGroup>
-                <VbenButton size="sm" variant="outline" @click="stopAnimation">
-                  重置
-                </VbenButton>
-                <VbenButton
-                  size="sm"
-                  :variant="isPlaying ? 'secondary' : 'default'"
-                  @click="isPlaying ? pause() : play()"
-                >
-                  {{ isPlaying ? '暂停' : '播放' }}
-                </VbenButton>
-              </VbenButtonGroup>
-              <div class="flex items-center gap-2 bg-white/95">
-                <span class="min-w-12 text-right text-xs text-gray-500">
-                  {{ currentIndex + 1 }}/{{ points.length }}
-                </span>
-                <input
-                  :max="points.length - 1"
-                  :min="0"
-                  :value="currentIndex"
-                  class="h-1 w-24 cursor-pointer appearance-none rounded-full bg-gray-300"
-                  step="1"
-                  type="range"
-                  @input="
-                    seek(Number(($event.target as HTMLInputElement).value))
-                  "
-                />
-              </div>
+        <!-- 轨迹回放控制 -->
+        <template v-if="mode === 'trajectory'">
+          <div class="flex flex-col gap-2">
+            <VbenButtonGroup>
+              <VbenButton size="sm" variant="outline" @click="stopAnimation">
+                重置
+              </VbenButton>
+              <VbenButton
+                size="sm"
+                :variant="isPlaying ? 'secondary' : 'default'"
+                @click="isPlaying ? pause() : play()"
+              >
+                {{ isPlaying ? '暂停' : '播放' }}
+              </VbenButton>
+            </VbenButtonGroup>
+            <div class="flex items-center gap-2 bg-white/95">
+              <span class="min-w-12 text-right text-xs text-gray-500">
+                {{ currentIndex + 1 }}/{{ points.length }}
+              </span>
+              <input
+                :max="points.length - 1"
+                :min="0"
+                :value="currentIndex"
+                class="h-1 w-24 cursor-pointer appearance-none rounded-full bg-gray-300"
+                step="1"
+                type="range"
+                @input="seek(Number(($event.target as HTMLInputElement).value))"
+              />
             </div>
-          </template>
-        </div>
+          </div>
+        </template>
+      </div>
     </div>
 
     <!-- 右侧信息面板 -->

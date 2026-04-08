@@ -4,24 +4,14 @@ import { $t } from '#/locales';
 
 const routes: RouteRecordRaw[] = [
   {
-    name: 'Map',
-    path: '/map',
+    name: 'MapMarking',
+    path: '/map-marking',
+    component: () => import('#/views/map/unified/index.vue'),
     meta: {
-      icon: 'lucide:map',
-      order: 10,
-      title: $t('page.map.title'),
+      icon: 'lucide:map-pin',
+      order: 5,
+      title: $t('page.map.marking'),
     },
-    children: [
-      {
-        name: 'MapUnified',
-        path: '/map/unified',
-        component: () => import('#/views/map/unified/index.vue'),
-        meta: {
-          icon: 'lucide:map-pin',
-          title: $t('page.map.unified'),
-        },
-      },
-    ],
   },
 ];
 
