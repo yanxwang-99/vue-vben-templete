@@ -548,11 +548,7 @@ defineExpose({
 
     <!-- 左上角工具栏 -->
     <div class="absolute left-4 top-4 z-10">
-      <div
-        class="rounded-lg border border-gray-200 bg-white/95 p-3 shadow-lg backdrop-blur"
-      >
-        <div class="flex flex-col gap-3">
-          <div class="text-xs font-medium text-gray-500">显示模式</div>
+      <div class="flex flex-col gap-3">
           <VbenButtonGroup>
             <VbenButton
               variant="outline"
@@ -586,7 +582,6 @@ defineExpose({
 
           <!-- 轨迹回放控制 -->
           <template v-if="mode === 'trajectory'">
-            <div class="h-px bg-gray-200"></div>
             <div class="flex flex-col gap-2">
               <VbenButtonGroup>
                 <VbenButton size="sm" variant="outline" @click="stopAnimation">
@@ -600,7 +595,7 @@ defineExpose({
                   {{ isPlaying ? '暂停' : '播放' }}
                 </VbenButton>
               </VbenButtonGroup>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 bg-white/95">
                 <span class="min-w-12 text-right text-xs text-gray-500">
                   {{ currentIndex + 1 }}/{{ points.length }}
                 </span>
@@ -619,7 +614,6 @@ defineExpose({
             </div>
           </template>
         </div>
-      </div>
     </div>
 
     <!-- 右侧信息面板 -->
