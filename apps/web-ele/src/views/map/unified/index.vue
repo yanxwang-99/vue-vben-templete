@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 import type { VbenFormSchema } from '#/adapter/form';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
+
+import { ColPage } from '@vben/common-ui';
+import { IconifyIcon } from '@vben/icons';
 
 import { MapUnified } from '@vben-core/map-ui';
+
+import { ElButton, ElTooltip } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
@@ -133,14 +138,6 @@ const formSchema: VbenFormSchema[] = [
     fieldName: 'timeRange',
     label: '时间范围',
   },
-  {
-    component: 'Input',
-    componentProps: {
-      placeholder: '搜索经度/纬度...',
-    },
-    fieldName: 'keyword',
-    label: '关键词',
-  },
 ];
 
 // ============ 表格 ============
@@ -202,6 +199,12 @@ const [Grid] = useVbenVxeGrid({
   formOptions: {
     schema: formSchema,
     submitOnChange: true,
+    submitOnEnter: true,
+    collapsed: false,
+    showCollapseButton: false,
+    submitButtonOptions: {
+      content: '过滤',
+    },
   },
   tableTitle: '标记点数据',
 });
@@ -220,26 +223,42 @@ onMounted(() => {
     mapRef.value?.enableScatterMode();
   }, 500);
 });
+
+const props = reactive({
+  leftCollapsedWidth: 5,
+  leftCollapsible: true,
+  leftMaxWidth: 60,
+  leftMinWidth: 20,
+  leftWidth: 50,
+  resizable: true,
+  rightWidth: 50,
+  splitHandle: true,
+  splitLine: true,
+});
 </script>
 
 <template>
-  <div class="flex h-full w-full">
-    <!-- 左侧：带搜索表单的表格 -->
-    <div
-      class="h-full w-[800px] shrink-0 overflow-hidden border-r border-gray-200"
-    >
-      <Grid />
-    </div>
-
-    <!-- 右侧：地图 -->
-    <div class="h-full flex-1">
+  <ColPage
+    auto-content-height
+    v-bind="props"
+  >
+    <template #left="{ isCollapsed, expand }">
+      <div v-if="isCollapsed" @click="expand">
+        <ElTooltip content="点击展开地图">
+          <ElButton circle type="primary" class="flex-center">
+            <IconifyIcon class="text-2xl" icon="bi:arrow-right" />
+          </ElButton>
+        </ElTooltip>
+      </div>
       <MapUnified
         ref="mapRef"
         :center="[120.3119, 31.4912]"
         :zoom="13"
         :points="filteredPoints"
         @point-click="handlePointClick"
+        v-else
       />
-    </div>
-  </div>
+    </template>
+    <Grid />
+  </ColPage>
 </template>
