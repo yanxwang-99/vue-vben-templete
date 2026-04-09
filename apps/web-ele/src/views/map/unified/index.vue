@@ -57,9 +57,9 @@ function generateSampleData(): MapPoint[] {
       action:
         i === 0 || i === 5 || i === 10
           ? '打卡'
-          : (Math.random() > 0.7
+          : Math.random() > 0.7
             ? '拍照'
-            : '移动'),
+            : '移动',
     });
   }
 
@@ -151,11 +151,13 @@ const [Grid] = useVbenVxeGrid({
       {
         field: 'timestamp',
         formatter: 'formatDateTime',
+        sortable: true,
         minWidth: 180,
         title: '时间',
       },
     ],
     pagerConfig: {},
+    height: 'auto',
     proxyConfig: {
       ajax: {
         query: async (
@@ -205,6 +207,7 @@ const [Grid] = useVbenVxeGrid({
     submitButtonOptions: {
       content: '过滤',
     },
+    wrapperClass: 'grid-cols-1 @[960px]:grid-cols-2',
   },
   tableTitle: '标记点数据',
 });
@@ -238,10 +241,7 @@ const props = reactive({
 </script>
 
 <template>
-  <ColPage
-    auto-content-height
-    v-bind="props"
-  >
+  <ColPage auto-content-height v-bind="props">
     <template #left="{ isCollapsed, expand }">
       <div v-if="isCollapsed" @click="expand">
         <ElTooltip content="点击展开地图">
@@ -259,6 +259,9 @@ const props = reactive({
         v-else
       />
     </template>
-    <Grid />
+
+    <div class="h-full overflow-hidden @container">
+      <Grid />
+    </div>
   </ColPage>
 </template>
