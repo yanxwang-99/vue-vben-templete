@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MapContainerProps } from '../types';
+import type { MapContainerProps } from './types';
 
 import { onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
 
@@ -7,8 +7,8 @@ import { VbenButton, VbenButtonGroup } from '@vben-core/shadcn-ui';
 
 import maplibregl from 'maplibre-gl';
 
-import { useBaseMap } from '../composables/use-base-map';
 import MapMarkerInfo from './map-marker-info.vue';
+import { useBaseMap } from './use-base-map';
 
 // ============ 类型定义 ============
 interface MapPoint {

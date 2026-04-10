@@ -47,11 +47,11 @@ const emit = defineEmits<{
 
 // ============ 计算属性 ============
 const formattedLng = computed(() =>
-  props.lng == null ? '-' : props.lng.toFixed(6),
+  props.lng === null || props.lng === undefined ? '-' : props.lng.toFixed(6),
 );
 
 const formattedLat = computed(() =>
-  props.lat == null ? '-' : props.lat.toFixed(6),
+  props.lat === null || props.lat === undefined ? '-' : props.lat.toFixed(6),
 );
 
 // ============ 方法 ============
@@ -62,7 +62,10 @@ function handleClose() {
 function getBadgeVariant(
   type?: string,
 ): 'default' | 'destructive' | 'outline' | 'secondary' {
-  const variants: Record<string, 'default' | 'destructive' | 'outline' | 'secondary'> = {
+  const variants: Record<
+    string,
+    'default' | 'destructive' | 'outline' | 'secondary'
+  > = {
     danger: 'destructive',
     info: 'secondary',
     primary: 'default',
@@ -78,7 +81,8 @@ function getBadgeClass(type?: string): string {
     info: 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-100',
     primary: 'bg-blue-500 text-white dark:bg-blue-600 dark:text-white',
     success: 'bg-green-500 text-white dark:bg-green-600 dark:text-white',
-    warning: 'border-yellow-500 text-yellow-700 dark:border-yellow-400 dark:text-yellow-400',
+    warning:
+      'border-yellow-500 text-yellow-700 dark:border-yellow-400 dark:text-yellow-400',
   };
   return classes[type || ''] || '';
 }
@@ -89,7 +93,9 @@ function getBadgeClass(type?: string): string {
     <div v-if="visible" class="absolute right-4 top-4 z-20 w-80">
       <Card class="overflow-hidden">
         <!-- 头部 -->
-        <CardHeader class="flex flex-row items-start justify-between space-y-0 pb-3">
+        <CardHeader
+          class="flex flex-row items-start justify-between space-y-0 pb-3"
+        >
           <div class="flex-1">
             <CardTitle v-if="title" class="text-base">
               {{ title }}
@@ -107,7 +113,9 @@ function getBadgeClass(type?: string): string {
 
         <!-- 坐标信息 -->
         <CardContent class="flex items-center gap-3 py-3">
-          <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-blue-50">
+          <div
+            class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-blue-50"
+          >
             <Pin class="h-4 w-4 text-blue-500" />
           </div>
           <div>

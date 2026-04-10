@@ -6,11 +6,10 @@ import { onMounted, reactive, ref } from 'vue';
 import { ColPage } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { MapUnified } from '@vben-core/map-ui';
-
 import { ElButton, ElTooltip } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { MapUnified } from '#/components/map';
 
 defineOptions({ name: 'MapMarkingPage' });
 

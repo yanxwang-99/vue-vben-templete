@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { MapContainerProps } from '../types';
+import type { MapContainerProps } from './types';
 
 import { ref } from 'vue';
 
-import { useBaseMap } from '../composables/use-base-map';
+import { useBaseMap } from './use-base-map';
 
 defineOptions({ name: 'MapContainer' });
 

@@ -26,7 +26,8 @@
     "#/*": "./src/*"
   },
   "dependencies": {
-    "@vben-core/map-ui": "workspace:*",
+    "@vben-core/icons": "workspace:*",
+    "@vben-core/shadcn-ui": "workspace:*",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
     "@vben/constants": "workspace:*",
@@ -44,7 +45,9 @@
     "@vueuse/core": "catalog:",
     "dayjs": "catalog:",
     "element-plus": "catalog:",
+    "maplibre-gl": "catalog:",
     "pinia": "catalog:",
+    "pmtiles": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },

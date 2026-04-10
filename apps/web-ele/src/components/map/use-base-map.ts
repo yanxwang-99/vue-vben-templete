@@ -2,7 +2,7 @@ import type { MapOptions } from 'maplibre-gl';
 
 import type { Ref, ShallowRef } from 'vue';
 
-import type { UseBaseMapOptions, UseBaseMapReturn } from '../types';
+import type { UseBaseMapOptions, UseBaseMapReturn } from './types';
 
 import { onMounted, onUnmounted, ref, shallowRef } from 'vue';
 
