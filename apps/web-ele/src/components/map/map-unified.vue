@@ -3,6 +3,9 @@ import type { MapContainerProps } from './types';
 
 import { onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
 
+import { Loading } from '@vben/common-ui';
+
+import { IconifyIcon } from '@vben-core/icons';
 import { VbenButton, VbenButtonGroup } from '@vben-core/shadcn-ui';
 
 import maplibregl from 'maplibre-gl';
@@ -567,17 +570,18 @@ watch(
     <div ref="containerRef" class="h-full w-full"></div>
 
     <!-- 加载状态 -->
-    <div
-      v-if="loading"
-      class="pointer-events-none absolute inset-0 flex items-center justify-center bg-white/80"
+    <Loading
+      :spinning="loading"
+      text="正在加载地图..."
+      class="absolute inset-0"
     >
-      <div class="flex flex-col items-center gap-2">
-        <div
-          class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
-        ></div>
-        <span class="text-sm text-gray-500">地图加载中...</span>
-      </div>
-    </div>
+      <template #icon>
+        <IconifyIcon
+          icon="svg-spinners:bars-scale"
+          class="size-10 text-primary"
+        />
+      </template>
+    </Loading>
 
     <!-- 左上角工具栏 -->
     <div class="absolute left-4 top-4 z-10">

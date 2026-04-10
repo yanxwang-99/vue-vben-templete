@@ -56,9 +56,9 @@ function generateSampleData(): MapPoint[] {
       action:
         i === 0 || i === 5 || i === 10
           ? '打卡'
-          : Math.random() > 0.7
+          : (Math.random() > 0.7
             ? '拍照'
-            : '移动',
+            : '移动'),
     });
   }
 
